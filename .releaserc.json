@@ -1,0 +1,36 @@
+{
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/exec",
+      {
+        "verifyReleaseCmd": "mvn versions:set -DnewVersion=\"${nextRelease.version}\" -DgenerateBackupPoms=false && echo \"NEXT_VERSION=${nextRelease.version}\" >> build.env"
+      }
+    ],
+    [
+      "@semantic-release/changelog",
+      {
+        "mangle": false,
+        "headerIds": false,
+        "changelogFile": "document/CHANGELOG.md"
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "pom.xml",
+          "build.env",
+          "document/CHANGELOG.md"
+        ],
+        "message": "chore(release): bump ${nextRelease.version}"
+      }
+    ]
+  ],
+  "branches": [
+    "main",
+    "master",
+    "temp"
+  ]
+}
